@@ -3,6 +3,9 @@
         <title>DBC</title>
         <script type="text/javascript" src="ajax.js"></script>
         <script type="text/javascript">
+            var ipcRenderer = require('electron').ipcRenderer;
+            //ipc.on('info' , function(event , data){ console.log(data.msg) });
+
             var connect = function(d) {
                 var formData = new FormData(d),
                     data = {};
@@ -13,10 +16,10 @@
                     "http://" + data.address + ":" + data.infoPort + "/connect",
                     {},
                     function(resp) {
-                        var data = JSON.parse(resp);
-                        if (data && data.status === "ok") {
+                        var respData = JSON.parse(resp);
+                        if (respData && respData.status === "ok") {
                             // close dialog
-
+                            ipcRenderer.send("connected", data);
                         } else {
                             alert("Failed connecting!");
                         }
@@ -31,9 +34,9 @@
         <h1>DBC Open</h1>
         <form id="connectForm" onsubmit="return connect(this)">
             Server:
-            <input type="text" name="address" />
+            <input type="text" name="address" value="localhost" />
             Info port:
-            <input type="text" name="infoPort" />
+            <input type="text" name="infoPort" value="33100" />
             Data port:
             <input type="text" name="dataPort" />
             <input type="submit" value="Connect" />

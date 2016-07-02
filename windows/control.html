@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <title>DBC</title>
+        <script type="text/javascript" src="ajax.js"></script>
+        <script type="text/javascript">
+            var ipcRenderer = require('electron').ipcRenderer,
+                connectionInfo;
+            //ipc.on('info' , function(event , data){ console.log(data.msg) });
+
+            function getList() {
+                var ul = document.getElementById("list"),
+                    info = connectionInfo.info;
+                console.log("Connection", connectionInfo);
+                ajax.get(
+                    "http://" + info.address + ":" + info.infoPort + "/tracklist",
+                    {},
+                    function(resp) {
+                        var data = JSON.parse(resp);
+                        if (data && data.status === "ok") {
+                            data.tracks.forEach(function(track) {
+                                var li = document.createElement("li");
+                                li.innerHTML = track.info.artist + " - " + track.info.title;
+                                ul.appendChild(li);
+                            });
+                        } else {
+                            alert("Failed connecting!");
+                        }
+                    },
+                    true
+                );
+            }
+
+            ipcRenderer.on("connected", function(event, info) {
+                console.log("connected", event, info);
+                connectionInfo = info;
+                getList();
+            });
+
+            // var connect = function(d) {
+            //     var formData = new FormData(d),
+            //         data = {};
+            //     for (var [key, value] of formData.entries()) {
+            //         data[key] = value;
+            //     }
+            //     ajax.get(
+            //         "http://" + data.address + ":" + data.infoPort + "/connect",
+            //         {},
+            //         function(resp) {
+            //             var data = JSON.parse(resp);
+            //             if (data && data.status === "ok") {
+            //                 // close dialog
+            //                 ipcRenderer.send("connected", true);
+            //             } else {
+            //                 alert("Failed connecting!");
+            //             }
+            //         },
+            //         true
+            //     );
+            //     return false;
+            // };
+        </script>
+    </head>
+    <body>
+        <h1>DBC Control</h1>
+        <ul id="list">
+
+        </ul>
+    </body>
+</html>
