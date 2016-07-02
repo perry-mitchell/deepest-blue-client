@@ -1,0 +1,29 @@
+{
+  "name": "deepest-blue-client",
+  "version": "0.1.0",
+  "description": "Deepest Blue music transfer client",
+  "main": "source/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/perry-mitchell/deepest-blue-client.git"
+  },
+  "keywords": [
+    "music",
+    "transfer",
+    "gui",
+    "remote"
+  ],
+  "author": "Perry Mitchell <perry@kiosked.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/perry-mitchell/deepest-blue-client/issues"
+  },
+  "homepage": "https://github.com/perry-mitchell/deepest-blue-client#readme",
+  "dependencies": {
+    "socket.io-client": "^1.4.8",
+    "socket.io-stream": "^0.9.0"
+  }
+}

@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>DBC</title>
+        <script type="text/javascript" src="ajax.js"></script>
+        <script type="text/javascript">
+            var connect = function(d) {
+                var formData = new FormData(d),
+                    data = {};
+                for (var [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+                ajax.get(
+                    "http://" + data.address + ":" + data.infoPort + "/connect",
+                    {},
+                    function(resp) {
+                        var data = JSON.parse(resp);
+                        if (data && data.status === "ok") {
+                            // close dialog
+
+                        } else {
+                            alert("Failed connecting!");
+                        }
+                    },
+                    true
+                );
+                return false;
+            };
+        </script>
+    </head>
+    <body>
+        <h1>DBC Open</h1>
+        <form id="connectForm" onsubmit="return connect(this)">
+            Server:
+            <input type="text" name="address" />
+            Info port:
+            <input type="text" name="infoPort" />
+            Data port:
+            <input type="text" name="dataPort" />
+            <input type="submit" value="Connect" />
+        </form>
+    </body>
+</html>
