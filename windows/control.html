@@ -18,9 +18,16 @@
                         var data = JSON.parse(resp);
                         if (data && data.status === "ok") {
                             data.tracks.forEach(function(track) {
+                                console.log("Track", track);
                                 var li = document.createElement("li");
                                 li.innerHTML = track.info.artist + " - " + track.info.title;
+                                li.setAttribute("data-filename", track.path);
                                 ul.appendChild(li);
+                                li.addEventListener("click", function() {
+                                    ipcRenderer.send("get-track", {
+                                        filename: this.getAttribute("data-filename")
+                                    });
+                                }, false);
                             });
                         } else {
                             alert("Failed connecting!");
